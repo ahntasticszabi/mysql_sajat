@@ -91,7 +91,6 @@ namespace mysql
             Console.Write("Válaszod : ");
             Console.ResetColor(); Console.ForegroundColor = ConsoleColor.White;
             string valasztas = Console.ReadLine();
-            Console.ResetColor();
 
             switch (valasztas)
             {
@@ -99,16 +98,13 @@ namespace mysql
                 case "Linq":
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //1. feladat: Hány darab elem van a listában
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"1. feladat : {products.Count()} darab termék van a listában");
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //2. feladat: Típusonként hány darab van
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -122,18 +118,16 @@ namespace mysql
                     {
                         Console.WriteLine($"\t{item.Key} | {item.Count()}");
                     }
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //3. feladat: Csak a megadott típusúakat írja
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("3. feladat: Adj meg egy típust: ");
-                    Console.ResetColor(); Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.White;
                     string tipusneve = Console.ReadLine();
-                    Console.ResetColor(); Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     var tipus_linq = (
                         from sor in products
@@ -153,11 +147,9 @@ namespace mysql
                         Console.WriteLine("Nincsen ilyen típus");
                     }
 
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //4. feladat: Az összes "Cars"-ra végződő típus
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -181,11 +173,9 @@ namespace mysql
                         Console.WriteLine("\tNincsenek ilyen típus/típusok");
                     }
 
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //5. feladat: Legdrágább típus adatai 
                     Console.ForegroundColor = ConsoleColor.Magenta;
@@ -195,11 +185,9 @@ namespace mysql
                         select sor
                     ).Last();
                     Console.WriteLine($"5. feladat : Legdrágább típus:\n\t{legdragabb.name} | {legdragabb.price:.$} | {legdragabb.type}");
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //6. feladat: Legdrágább típusok adatai 
                     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -226,11 +214,9 @@ namespace mysql
                     {
                         Console.WriteLine("\tNincs több ugyanolyan árú autó");
                     }
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //7. feladat : Minden típusból a legdrágább autó
                     Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -251,16 +237,13 @@ namespace mysql
                 case "Lambda":
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //1. feladat: Hány darab elem van a listában
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"1. feladat : {products.Count()} darab termék van a listában");
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //2. feladat: Típusonként hány darab van
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -271,18 +254,16 @@ namespace mysql
                     {
                     Console.WriteLine($"\t{item.Key} | {item.Count()}");
                     }
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //3. feladat: Csak a megadott típusúakat írja
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("3. feladat: Adj meg egy típust: ");
-                    Console.ResetColor(); Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.White;
                     string tipusneve_lambda = Console.ReadLine();
-                    Console.ResetColor(); Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     var tipus_lambda = products.Where(x => x.type == tipusneve_lambda);
 
@@ -297,11 +278,9 @@ namespace mysql
                     {
                     Console.WriteLine("Nincsenek ilyen típusok");
                     }
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //4. feladat: Az összes "Cars"-ra végződő típus
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -320,11 +299,9 @@ namespace mysql
                     {
                     Console.WriteLine("Nincsenek ilyen típusok");
                     }
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //5. feladat: Legdrágább típus adatai 
                     Console.ForegroundColor = ConsoleColor.Magenta;
@@ -334,11 +311,9 @@ namespace mysql
                         select sor
                     ).Last();
                     Console.WriteLine($"5. feladat : Legdrágább típus:\n\t{legdragabb_lambda.name} | {legdragabb_lambda.price:.$} | {legdragabb_lambda.type}");
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //6. feladat: Legdrágább típusok adatai 
                     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -365,11 +340,9 @@ namespace mysql
                     {
                         Console.WriteLine("\tNincs több ugyanolyan árú autó");
                     }
-                    Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n------------------------------------\n");
-                    Console.ResetColor();
 
                     //7. feladat : Minden típusból a legdrágább autó
                     Console.ForegroundColor = ConsoleColor.DarkGray;
