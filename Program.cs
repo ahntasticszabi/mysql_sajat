@@ -220,7 +220,7 @@ namespace mysql
 
                     //7. feladat : Minden típusból a legdrágább autó
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine("7. feladat: Minden típusból a legdrágább autó:");
+                    Console.WriteLine("7. feladat : Minden típusból a legdrágább autó:");
                     var minden_legdragabb = (
                         from sor in products
                         orderby sor.price
@@ -230,7 +230,28 @@ namespace mysql
                     {
                         Console.WriteLine($"\t{item.Key} | {item.Max()}");
                     }
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n------------------------------------\n");
+
+                    //8. feladat : Hány darab típus van
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    var dis_linq = (
+                        from sor in products
+                        select sor.type
+                    ).Distinct();
+
+                    Console.WriteLine($"8. feladat : {dis_linq.Count()} darab típus van. Ezek az alábbiak:");
+                    foreach (var item in dis_linq)
+                    {
+                        Console.WriteLine($"\t{item}");
+                    }
+
                     Console.ResetColor();
+
+
+
+
                     break;
                 
                 //Lambda-s megoldás
@@ -346,7 +367,7 @@ namespace mysql
 
                     //7. feladat : Minden típusból a legdrágább autó
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine("7. feladat: Minden típusból a legdrágább autó:");
+                    Console.WriteLine("7. feladat : Minden típusból a legdrágább autó:");
                     var minden_legdragabb_lambda = (
                         from sor in products
                         orderby sor.price
@@ -356,6 +377,19 @@ namespace mysql
                     {
                         Console.WriteLine($"\t{item.Key} | {item.Max()}");
                     }
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n------------------------------------\n");
+
+                    //8. feladat : Hány darab típus van
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    var dis_lambda = products.Select(x => x.type).Distinct();
+                    Console.WriteLine($"8. feladat : {dis_lambda.Count()} darab típus van. Ezek az alábbiak:");
+                    foreach (var item in dis_lambda)
+                    {
+                        Console.WriteLine($"\t{item}");
+                    }
+
                     Console.ResetColor();
                 break;
 
