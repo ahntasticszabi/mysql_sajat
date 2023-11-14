@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
@@ -25,27 +26,39 @@ namespace mysql
         public int quantity { get; set; }
         public double price { get; set; }
     }
+    class PaymentsTable
+    {
+        public int customerNumber { get; set; }
+        public string paymentDate { get; set; }
+        public double amount { get; set; }
+    }
     class Program
     {
+        static string connString = "server=localhost;database=classicmodels;uid=root;password=12345678";
+        static MySqlConnection conn = new MySqlConnection(connString);
+
+
         static void Main(string[] args)
         {
-            string connString = "server=localhost;database=classicmodels;uid=root;password=12345678";
-            MySqlConnection conn = new MySqlConnection(connString);
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Kapcsolat létrehozása..");
             conn.Open();
             Console.WriteLine("Kapcsolat létrehozva!");
             Console.ResetColor();
 
+            Employees();
+            Products();
+            Payments();
+
+            Console.ReadKey();
+        }
+
+        static void Employees()
+        {
             List<EmployeesTable> employees = new List<EmployeesTable>();
             string query = "SELECT * FROM employees";
             MySqlCommand command = new MySqlCommand(query, conn);
             MySqlDataReader reader = command.ExecuteReader();
-
-            List<ProductsTable> products = new List<ProductsTable>();
-            string query2 = "SELECT * FROM products";
-            MySqlCommand command2 = new MySqlCommand(query2, conn);
-            //MySqlDataReader reader2 = command2.ExecuteReader();
             while (reader.Read())
             {
                 var employee = new EmployeesTable
@@ -57,11 +70,19 @@ namespace mysql
                 };
                 employees.Add(employee);
             }
-            
             reader.Close();
+            //foreach (var item in employees)
+            //{
+                //Console.WriteLine($"{item.id} | {item.firstname} | {item.lastname} | {item.email}");
+            //}
+        }
 
-            command.CommandText = "SELECT * FROM products";
-            reader = command.ExecuteReader();
+        static void Products()
+        {
+            List<ProductsTable> products = new List<ProductsTable>();
+            string query = "SELECT * FROM products";
+            MySqlCommand command = new MySqlCommand(query, conn);
+            MySqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -74,22 +95,17 @@ namespace mysql
                 };
                 products.Add(product);
             }
-            
             reader.Close();
-            //A két tábla oszlopainak kiírása: 
-            //foreach (var item in employees)
+            //foreach (var item2 in products)
             //{
-            //Console.WriteLine($"{item.id} | {item.firstname} | {item.lastname} | {item.email}");
+            //    Console.WriteLine($"{item2.name} | {item2.type} | {item2.quantity} | {item2.price}");
             //}
-            //foreach(var item2 in products)
-            //{
-            //Console.WriteLine($"{item2.name} | {item2.type} | {item2.quantity} | {item2.price}");
-            //}
+            reader.Close();
 
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.WriteLine("\nÜdv! Mivel szeretnéd lefuttatni a kódot? Linq-val vagy Lambda-val?\n\t A Linq-s megoldáshoz írd a \"Linq\"-t\n\t A Lambda-s megoldáshoz írd a \"Lambda\"-t");
             Console.Write("Válaszod : ");
-            Console.ResetColor(); Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White;
             string valasztas = Console.ReadLine();
 
             switch (valasztas)
@@ -109,7 +125,7 @@ namespace mysql
                     //2. feladat: Típusonként hány darab van
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("2. feladat : Típusonként hány darab van");
-                    
+
                     var darab_linq = (
                         from sor in products
                         group sor by sor.type
@@ -154,7 +170,7 @@ namespace mysql
                     //4. feladat: Az összes "Cars"-ra végződő típus
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("4. feladat : Az összes \"Cars\"-ra végződő típus");
-                    
+
                     var cars_linq = (
                         from sor in products
                         where sor.type.EndsWith("Cars")
@@ -253,7 +269,7 @@ namespace mysql
 
 
                     break;
-                
+
                 //Lambda-s megoldás
                 case "Lambda":
                     Console.ForegroundColor = ConsoleColor.White;
@@ -268,12 +284,12 @@ namespace mysql
 
                     //2. feladat: Típusonként hány darab van
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("2. feladat : Típusonként hány darab van");   
+                    Console.WriteLine("2. feladat : Típusonként hány darab van");
 
                     var darab_lambda = products.GroupBy(x => x.type);
                     foreach (var item in darab_lambda)
                     {
-                    Console.WriteLine($"\t{item.Key} | {item.Count()}");
+                        Console.WriteLine($"\t{item.Key} | {item.Count()}");
                     }
 
                     Console.ForegroundColor = ConsoleColor.White;
@@ -290,14 +306,14 @@ namespace mysql
 
                     if (tipus_lambda.Any())
                     {
-                    foreach (var item in tipus_lambda)
-                    {
-                    Console.WriteLine($"\t{item.name} | {item.price:.}$ | {item.type}");
-                    }
+                        foreach (var item in tipus_lambda)
+                        {
+                            Console.WriteLine($"\t{item.name} | {item.price:.}$ | {item.type}");
+                        }
                     }
                     else
                     {
-                    Console.WriteLine("Nincsenek ilyen típusok");
+                        Console.WriteLine("Nincsenek ilyen típusok");
                     }
 
                     Console.ForegroundColor = ConsoleColor.White;
@@ -306,19 +322,19 @@ namespace mysql
                     //4. feladat: Az összes "Cars"-ra végződő típus
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("4. feladat : Az összes \"Cars\"-ra végződő típus");
-                    
+
                     var cars_lambda = products.Where(x => x.type.EndsWith("Cars"));
 
                     if (cars_lambda.Any())
                     {
-                    foreach (var item in cars_lambda)
-                    {
-                    Console.WriteLine($"\t{item.name} | {item.price:.}$ | {item.type}");
-                    }
+                        foreach (var item in cars_lambda)
+                        {
+                            Console.WriteLine($"\t{item.name} | {item.price:.}$ | {item.type}");
+                        }
                     }
                     else
                     {
-                    Console.WriteLine("Nincsenek ilyen típusok");
+                        Console.WriteLine("Nincsenek ilyen típusok");
                     }
 
                     Console.ForegroundColor = ConsoleColor.White;
@@ -391,16 +407,38 @@ namespace mysql
                     }
 
                     Console.ResetColor();
-                break;
+                    break;
 
                 default:
-                    Console.ForegroundColor= ConsoleColor.DarkMagenta;
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.WriteLine("\"Linq\" vagy \"Lambda\", nem nagy feladat banyek");
                     Console.ResetColor();
                     break;
             }
-            
-            Console.ReadKey();
+
+        }
+
+        static void Payments()
+        {
+            List<PaymentsTable> payments = new List<PaymentsTable>();
+            string query = "SELECT * FROM payments";
+            MySqlCommand command = new MySqlCommand(query, conn);
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var payment = new PaymentsTable
+                {
+                    customerNumber = Convert.ToInt32(reader["customerNumber"]),
+                    paymentDate = Convert.ToString(reader["paymentDate"]),
+                    amount = Convert.ToDouble(reader["amount"]),
+                };
+                payments.Add(payment);
+            }
+            reader.Close();
+            foreach (var item in payments)
+            {
+                Console.WriteLine($"{item.customerNumber} | {item.paymentDate} | {item.amount}");
+            }
         }
     }
 }
