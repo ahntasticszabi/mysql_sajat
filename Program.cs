@@ -36,6 +36,8 @@ namespace mysql
     {
         static string connString = "server=localhost;database=classicmodels;uid=root;password=12345678";
         static MySqlConnection conn = new MySqlConnection(connString);
+        
+
 
 
         static void Main(string[] args)
@@ -73,9 +75,11 @@ namespace mysql
             reader.Close();
             //foreach (var item in employees)
             //{
-                //Console.WriteLine($"{item.id} | {item.firstname} | {item.lastname} | {item.email}");
+            //Console.WriteLine($"{item.id} | {item.firstname} | {item.lastname} | {item.email}");
             //}
         }
+
+
 
         static void Products()
         {
@@ -103,7 +107,7 @@ namespace mysql
             reader.Close();
 
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.WriteLine("\nÜdv! Mivel szeretnéd lefuttatni a kódot? Linq-val vagy Lambda-val?\n\t A Linq-s megoldáshoz írd a \"Linq\"-t\n\t A Lambda-s megoldáshoz írd a \"Lambda\"-t");
+            Console.WriteLine("\nÜdv! Szeretnéd lefuttatni a kódot?\n\t Ha igen, válaszd ki, hogy a Linq-s vagy Lambda-s megoldásd használnád. A Linq-shoz írd a \"Linq\"-t\n\t A Lambda-s megoldáshoz írd a \"Lambda\"-t\n\tHa egyiket se választod, írd a \"Tovább\" szót");
             Console.Write("Válaszod : ");
             Console.ForegroundColor = ConsoleColor.White;
             string valasztas = Console.ReadLine();
@@ -409,13 +413,21 @@ namespace mysql
                     Console.ResetColor();
                     break;
 
-                default:
+                case "Tovább":
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.WriteLine("\"Linq\" vagy \"Lambda\", nem nagy feladat banyek");
                     Console.ResetColor();
                     break;
-            }
 
+                default:
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.WriteLine("Tovább mentél a következő táblára");
+                    Console.ResetColor();
+                    break;
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n------------------------------------\n");
+            Console.ResetColor();
         }
 
         static void Payments()
@@ -435,10 +447,68 @@ namespace mysql
                 payments.Add(payment);
             }
             reader.Close();
-            foreach (var item in payments)
+            //foreach (var item in payments)
+            //{
+              //Console.WriteLine($"{item.customerNumber} | {item.paymentDate} | {item.amount}");
+            //}
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n------------------------------------\n");
+            Console.ResetColor();
+
+            //3. feladat: What is the total of payments received?
+            Console.WriteLine($"3. feladat : Összes fizetések száma:");
+            var allpayments = (
+                from sor in payments
+                select sor.amount
+            ).Sum();
+            Console.WriteLine($"\t{allpayments}$");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n------------------------------------\n");
+            Console.ResetColor();
+
+            //5. feladat: Report total payments for October 28, 2004.
+            Console.WriteLine("5. feladat : A 2004. Október 28.-i fizetés adatai:");
+            var total_payments = (
+                        from sor in payments
+                        where sor.paymentDate == "2004. 10. 28. 0:00:00"
+                        select sor
+            );
+            foreach (var item in total_payments)
             {
-                Console.WriteLine($"{item.customerNumber} | {item.paymentDate} | {item.amount}");
+                Console.WriteLine($"\t{item.customerNumber} | {item.amount}$");
             }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n------------------------------------\n");
+            Console.ResetColor();
+
+            //6. feladat: Report those payments greater than $100,000.
+            Console.WriteLine("6. feladat : Az 100,000$-nál nagyobb fizetések adatai:");
+            var greater_than = (
+                        from sor in payments
+                        where sor.amount > 100000
+                        select sor
+            );
+            foreach (var item in greater_than)
+            {
+                Console.WriteLine($"\t{item.customerNumber} | {item.paymentDate} | {item.amount}$");
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n------------------------------------\n");
+            Console.ResetColor();
+
+            //9. feladat: What is the minimum payment received?
+            var min_payment = (
+                from sor in payments
+                orderby sor.amount
+                select sor.amount
+            ).Min();
+            Console.WriteLine($"9. feladat : Legkisebb fizetett összeg: {min_payment}$");
+
+
         }
     }
 }
