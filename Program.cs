@@ -508,7 +508,25 @@ namespace mysql
             ).Min();
             Console.WriteLine($"9. feladat : Legkisebb fizetett összeg: {min_payment}$");
 
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n------------------------------------\n");
+            Console.ResetColor();
 
+            Console.WriteLine($"10. feladat :");
+            var twice_payment = (
+                from sor in payments
+                select sor.amount
+            ).Average()*2;
+            Console.WriteLine(twice_payment);
+            var average = (
+                from sor in payments
+                where sor.amount > twice_payment
+                select sor
+            );
+            foreach (var item in average)
+            {
+                Console.WriteLine($"\t{item.customerNumber} | {item.paymentDate} | {item.amount}$");
+            }
         }
     }
 }
