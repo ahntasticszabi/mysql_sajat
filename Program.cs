@@ -512,12 +512,12 @@ namespace mysql
             Console.WriteLine("\n------------------------------------\n");
             Console.ResetColor();
 
-            Console.WriteLine($"10. feladat :");
+            //10. feladat: List all payments greater than twice the average payment.
+            Console.WriteLine($"10. feladat : Listázza ki az összes nagyobb fizetést ami nagyobb, mint az átlag fizetések kétszerese:");
             var twice_payment = (
                 from sor in payments
                 select sor.amount
             ).Average()*2;
-            Console.WriteLine(twice_payment);
             var average = (
                 from sor in payments
                 where sor.amount > twice_payment
