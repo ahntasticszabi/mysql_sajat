@@ -30,6 +30,10 @@ namespace mysql
     {
         public int customerNumber { get; set; }
         public string paymentDate { get; set; }
+        public string formatteddate
+        {
+            get => Convert.ToDateTime(paymentDate).ToString("yyyy-MM-dd");
+        }
         public double amount { get; set; }
     }
     class Program
@@ -46,12 +50,32 @@ namespace mysql
             Console.WriteLine("Kapcsolat létrehozása..");
             conn.Open();
             Console.WriteLine("Kapcsolat létrehozva!");
-            Console.ResetColor();
 
-            Employees();
-            Products();
-            Payments();
+            Console.WriteLine("\nÜdvözöllek a kódomban! Melyik tábla kódját szeretnéd lefuttatni?");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\tHa a Products-ét, írd a \"Products\" szót.");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\tHa a Payments-ét, írd a \"Payments\" szót.");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("\tHa egyiket se, simán nyomj egy entert");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("Válaszod: ");
+            string switch_on = Console.ReadLine();
 
+            switch (switch_on)
+            {
+                case "Products":
+                    Products(); 
+                    break;
+
+                case "Payments":
+                    Payments(); 
+                    break;
+                
+                default:
+                    Console.WriteLine("Nem vagy jó te fasz!");
+                    break;
+            }
             Console.ReadKey();
         }
 
@@ -79,8 +103,6 @@ namespace mysql
             //}
         }
 
-
-
         static void Products()
         {
             List<ProductsTable> products = new List<ProductsTable>();
@@ -106,9 +128,15 @@ namespace mysql
             //}
             reader.Close();
 
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.WriteLine("\nÜdv! Szeretnéd lefuttatni a kódot?\n\t Ha igen, válaszd ki, hogy a Linq-s vagy Lambda-s megoldásd használnád. A Linq-shoz írd a \"Linq\"-t\n\t A Lambda-s megoldáshoz írd a \"Lambda\"-t\n\tHa egyiket se választod, írd a \"Tovább\" szót");
-            Console.Write("Válaszod : ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nA kód melyik megoldását szeretnéd lefuttatni?");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\t A Linq-shoz írd a \"Linq\"-t");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\t A Lambda-s megoldáshoz írd a \"Lambda\"-t");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("\tHa egyiket se, simán nyomj egy entert");
+            Console.Write("Válaszod: ");
             Console.ForegroundColor = ConsoleColor.White;
             string valasztas = Console.ReadLine();
 
@@ -128,7 +156,7 @@ namespace mysql
 
                     //2. feladat: Típusonként hány darab van
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("2. feladat : Típusonként hány darab van");
+                    Console.WriteLine("2. feladat : Típusonként hány darab van:");
 
                     var darab_linq = (
                         from sor in products
@@ -144,10 +172,10 @@ namespace mysql
 
                     //3. feladat: Csak a megadott típusúakat írja
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("3. feladat: Adj meg egy típust: ");
+                    Console.Write("3. feladat : Adj meg egy típust: ");
                     Console.ForegroundColor = ConsoleColor.White;
                     string tipusneve = Console.ReadLine();
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Red;
 
                     var tipus_linq = (
                         from sor in products
@@ -173,7 +201,7 @@ namespace mysql
 
                     //4. feladat: Az összes "Cars"-ra végződő típus
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("4. feladat : Az összes \"Cars\"-ra végződő típus");
+                    Console.WriteLine("4. feladat : Az összes \"Cars\"-ra végződő típus:");
 
                     var cars_linq = (
                         from sor in products
@@ -211,7 +239,7 @@ namespace mysql
 
                     //6. feladat: Legdrágább típusok adatai 
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine($"6. feladat : A legdrágább típusok");
+                    Console.WriteLine($"6. feladat : A legdrágább típusok:");
 
                     Double max = (
                         from sor in products
@@ -288,7 +316,7 @@ namespace mysql
 
                     //2. feladat: Típusonként hány darab van
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("2. feladat : Típusonként hány darab van");
+                    Console.WriteLine("2. feladat : Típusonként hány darab van:");
 
                     var darab_lambda = products.GroupBy(x => x.type);
                     foreach (var item in darab_lambda)
@@ -301,7 +329,7 @@ namespace mysql
 
                     //3. feladat: Csak a megadott típusúakat írja
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("3. feladat: Adj meg egy típust: ");
+                    Console.Write("3. feladat : Adj meg egy típust: ");
                     Console.ForegroundColor = ConsoleColor.White;
                     string tipusneve_lambda = Console.ReadLine();
                     Console.ForegroundColor = ConsoleColor.White;
@@ -325,7 +353,7 @@ namespace mysql
 
                     //4. feladat: Az összes "Cars"-ra végződő típus
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("4. feladat : Az összes \"Cars\"-ra végződő típus");
+                    Console.WriteLine("4. feladat : Az összes \"Cars\"-ra végződő típus:");
 
                     var cars_lambda = products.Where(x => x.type.EndsWith("Cars"));
 
@@ -358,7 +386,7 @@ namespace mysql
 
                     //6. feladat: Legdrágább típusok adatai 
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine($"6. feladat : A legdrágább típusok");
+                    Console.WriteLine($"6. feladat : A legdrágább típusok:");
 
                     Double max_lambda = (
                         from sor in products
@@ -413,15 +441,9 @@ namespace mysql
                     Console.ResetColor();
                     break;
 
-                case "Tovább":
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.WriteLine("\"Linq\" vagy \"Lambda\", nem nagy feladat banyek");
-                    Console.ResetColor();
-                    break;
-
                 default:
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.WriteLine("Tovább mentél a következő táblára");
+                    Console.WriteLine("Egyiket se választottad mert félsz!");
                     Console.ResetColor();
                     break;
             }
@@ -457,6 +479,7 @@ namespace mysql
             Console.ResetColor();
 
             //3. feladat: What is the total of payments received?
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"3. feladat : Összes fizetések száma:");
             var allpayments = (
                 from sor in payments
@@ -469,6 +492,7 @@ namespace mysql
             Console.ResetColor();
 
             //5. feladat: Report total payments for October 28, 2004.
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("5. feladat : A 2004. Október 28.-i fizetés adatai:");
             var total_payments = (
                         from sor in payments
@@ -485,6 +509,7 @@ namespace mysql
             Console.ResetColor();
 
             //6. feladat: Report those payments greater than $100,000.
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("6. feladat : Az 100,000$-nál nagyobb fizetések adatai:");
             var greater_than = (
                         from sor in payments
@@ -493,10 +518,10 @@ namespace mysql
             );
             foreach (var item in greater_than)
             {
-                Console.WriteLine($"\t{item.customerNumber} | {item.paymentDate} | {item.amount}$");
+                Console.WriteLine($"\t{item.customerNumber} | {item.formatteddate} | {item.amount}$");
             }
 
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\n------------------------------------\n");
             Console.ResetColor();
 
@@ -513,6 +538,7 @@ namespace mysql
             Console.ResetColor();
 
             //10. feladat: List all payments greater than twice the average payment.
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"10. feladat : Listázza ki az összes nagyobb fizetést ami nagyobb, mint az átlag fizetések kétszerese:");
             var twice_payment = (
                 from sor in payments
@@ -525,7 +551,7 @@ namespace mysql
             );
             foreach (var item in average)
             {
-                Console.WriteLine($"\t{item.customerNumber} | {item.paymentDate} | {item.amount}$");
+                Console.WriteLine($"\t{item.customerNumber} | {item.formatteddate} | {item.amount}$");
             }
         }
     }
