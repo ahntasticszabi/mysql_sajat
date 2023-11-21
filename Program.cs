@@ -521,11 +521,12 @@ namespace mysql
                 Console.WriteLine($"\t{item.customerNumber} | {item.formatteddate} | {item.amount}$");
             }
 
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.White ;
             Console.WriteLine("\n------------------------------------\n");
             Console.ResetColor();
 
             //9. feladat: What is the minimum payment received?
+            Console.ForegroundColor = ConsoleColor.Green;
             var min_payment = (
                 from sor in payments
                 orderby sor.amount
@@ -540,7 +541,7 @@ namespace mysql
             //10. feladat: List all payments greater than twice the average payment.
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"10. feladat : Listázza ki az összes nagyobb fizetést ami nagyobb, mint az átlag fizetések kétszerese:");
-            var twice_payment = (
+            double twice_payment = (
                 from sor in payments
                 select sor.amount
             ).Average()*2;
